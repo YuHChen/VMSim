@@ -1,7 +1,16 @@
 #include "VMSystem.h"
 
-VMSystem::VMSystem(int memorySize){
+VMSystem::VMSystem(int memorySize, std::string algo){
 	RAMSize = memorySize;
+	if(algo == "RAND"){
+	  policy = RAND;
+	}
+	else if(algo == "LRU"){
+	  policy = LRU;
+	}
+	else{
+	  policy = FIFO;
+	}
 }
 
 void VMSystem::startProcess(int processID, int memorySize){
@@ -21,13 +30,26 @@ void VMSystem::referenceProcess(int processID, int pageNumber){
 	//Page has not allocate in RAM previously
 	if( (VM.find(processID) -> second)[pageNumber] == false){
 		//If RAM is no full and the page is not allocated in RAM 
-		if(RAM.size() < RAMSize){
+	  if(RAM.size() < RAMSize){
 			RAM.insert(std::pair<int, int> (processID, pageNumber) );
 			(VM.find(processID) -> second)[pageNumber] = true;
 		}
 		//RAM is full
 		else{
 			//page swap algorithm here
+		  switch(policy){
+		  case RAND:
+		    // rand();
+		    break;
+		  case LRU:
+		    // lru();
+		    break;
+		  case FIFO:
+		    // fifo();
+		    break;
+		  default:
+		    std::cerr << "unknown policy: " << policy << std::endl;
+		  }
 		}
 		pageFault++;
 	}
@@ -68,3 +90,8 @@ void VMSystem::simulate(std::string fileName){
 double VMSystem::pageFaultRate(double pageFault, double totalReferenced){
 	return pageFault/totalReferenced;
 }
+
+// replacement algorithms
+// void VMSystem::rand(){ }
+// void VMSystem::lru(){ }
+// void VMSystem::fifo(){ }

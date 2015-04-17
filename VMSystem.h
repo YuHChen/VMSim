@@ -16,21 +16,15 @@ struct info{
 };
 */
 
+enum Policy { RAND, LRU, FIFO };
+
 class VMSystem{
 
-  public:
-	VMSystem(int memorySize);
+ public:
+  VMSystem(int memorySize, std::string algo);
 	
 	void simulate(std::string fileName);
 	
-	void startProcess(int processID, int memorySize);
-
-	void terminateProcess(int processID);
-
-	void referenceProcess(int processID, int pageNumber);
-
-	double pageFaultRate(double pageFault, double totalReference);  
-
   private:
 	//Physical memory specifies which page slots allocated to each process
 	//<processID, pageNumber>
@@ -41,6 +35,19 @@ class VMSystem{
 	double pageFault;
 	double totalReferenced;
 	long long RAMSize;
+	Policy policy;
+
+	void startProcess(int processID, int memorySize);
+
+	void terminateProcess(int processID);
+
+	void referenceProcess(int processID, int pageNumber);
+
+	double pageFaultRate(double pageFault, double totalReference);  
+	// replacement algorithms
+	// void rand();
+	// void lru();
+	// void fifo();
 };
 
 #endif

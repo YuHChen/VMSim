@@ -1,13 +1,23 @@
+EXE = VMSystem
+
+SRC = \
+	Driver.cpp \
+	VMSystem.cpp \
+
+OBJ_FILES := $(SRC:.cpp=.o)
+
 GCC = g++
 FLAGS = -g -Wall
 COMPILER = -std=c++0x
-EXE = VMSystem
 
-all: Driver.o VMSystem.o
-	$(GCC) $(FLAGS) $(COMPILER) -o $(EXE) Driver.o VMSystem.o
-Driver.o: Driver.cpp
-	$(GCC) $(FLAGS) $(COMPILER) -c Driver.cpp
-VMSystem.o: VMSystem.cpp
-	$(GCC) $(FLAGS) $(COMPILER) -c VMSystem.cpp
+all:	$(EXE)
+
+$(EXE):	$(OBJ_FILES)
+	$(GCC) $(FLAGS) $(COMPILER) $(OBJ_FILES) -o $@
+
+# common build recipe for .o
+%.o:	%.cpp
+	$(GCC) $(FLAGS) $(COMPILER) -c $^
+
 clean:
 	rm -f *.o $(EXE)
