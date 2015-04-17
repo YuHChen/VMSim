@@ -1,0 +1,23 @@
+#!/bin/bash
+
+#
+# Bash shell script to run VMSim.exe 3 times
+# each with time with a different replacement algorithm
+#
+
+VMSIM="./VMSim.exe"
+
+if [ "$#" -ge 2 ]; then
+    if [ -e "$VMSIM" ]; then
+	#echo "$VMSIM exists"
+	./VMSim.exe "$1" "$2" RAND
+	./VMSim.exe "$1" "$2" LRU
+	./VMSim.exe "$1" "$2" FIFO
+    else
+	echo "$0: $VMSIM does not exist"
+	exit 1
+    fi
+else
+    echo "usage: $0 <frames-of-memory> <input-file>"
+    exit 1
+fi
