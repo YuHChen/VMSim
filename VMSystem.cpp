@@ -6,6 +6,8 @@ VMSystem::VMSystem(int memorySize, std::string algo){
 	RAMSize = memorySize;
 	//Start counting clock time
 	startTime = std::chrono::high_resolution_clock::now();
+	// seed RNG
+	gen.seed(startTime.time_since_epoch().count());
 
 	if(algo == "RAND"){
 	  policy = RAND;
@@ -31,6 +33,7 @@ void VMSystem::terminateProcess(int processID){
 }
 
 void VMSystem::referenceProcess(int processID, int pageNumber){
+  if(DEBUG) std::cerr << "reference: pid " << processID << " page " << pageNumber << std::endl; 
 	//Record the time for a page is referenced
 	std::chrono::high_resolution_clock::time_point stopTime = std::chrono::high_resolution_clock::now();
 	//Interval from program starting to a page reference
@@ -44,7 +47,7 @@ void VMSystem::referenceProcess(int processID, int pageNumber){
 		//page swap algorithm here
 		  switch(policy){
 		  case RAND:
-		    // rand();
+		    rand();
 		    break;
 		  case LRU:
 		    lru();
@@ -72,7 +75,36 @@ void VMSystem::referenceProcess(int processID, int pageNumber){
 	}
 }
 
-void VMSystem::lru(){
+void VMSystem::rand(void){
+  std::unordered_multimap<int, info>::iterator it, victim;
+  
+  // Select a random page as victim
+  int offset = gen() % RAM.size();
+  victim = RAM.begin();
+  for(int i = 0; i < offset; i++)
+    victim++;
+  if(DEBUG){
+    std::cerr << "in rand:\nRAM:" << std::endl;
+    for(it = RAM.begin(); it != RAM.end(); it++){
+      std::cerr << it->first << " " << it->second.pageNumber << std::endl;
+    }
+    std::cerr << "generated: " << offset << std::endl;
+    std::cerr << "victim: " << victim->first << " " << victim->second.pageNumber << std::endl;
+    std::cerr << "in rand: before erase, size = " << RAM.size() << std::endl;
+  }
+  int pid = victim->first;
+  int page = victim->second.pageNumber;
+  ((VM.find(pid))->second)[page] = false;
+  RAM.erase(victim);
+  if(DEBUG){
+    std::cerr << "in rand: after erase, size = " << RAM.size() << std::endl;       
+    for(it = RAM.begin(); it != RAM.end(); it++){
+      std::cerr << it->first << " " << it->second.pageNumber << std::endl;
+    }
+  }
+}
+
+void VMSystem::lru(void){
 	std::unordered_multimap<int, info>::iterator it, victom;
 
 	double min = 9999999999;
@@ -84,13 +116,18 @@ void VMSystem::lru(){
 		}		
 	}
 	if(DEBUG){
-	std::cout << "in lru: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber;
+	  std::cout << "in lru: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber << std::endl;
+	}
+	int pid = victom->first;
+	int page = victom->second.pageNumber;
+	((VM.find(pid))->second)[page] = false;
 	RAM.erase(victom);
-	std::cout << " in lru: after erase size = " << RAM.size() << std::endl;
+	if(DEBUG){
+	std::cout << "in lru: after erase size = " << RAM.size() << std::endl;
 	}
 }
 
-void VMSystem::fifo(){
+void VMSystem::fifo(void){
 
 	std::unordered_multimap<int, info>::iterator it, victom;
 
@@ -103,9 +140,14 @@ void VMSystem::fifo(){
 		}		
 	}
 	if(DEBUG){
-	std::cout << "in fifo: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber;
+	  std::cout << "in fifo: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber << std::endl;
+	}
+	int pid = victom->first;
+	int page = victom->second.pageNumber;
+	((VM.find(pid))->second)[page] = false;
 	RAM.erase(victom);
-	std::cout << " in fifo: after erase size = " << RAM.size() << std::endl;
+	if(DEBUG){
+	std::cout << "in fifo: after erase size = " << RAM.size() << std::endl;
 	}
 }
 
@@ -141,8 +183,3 @@ void VMSystem::simulate(std::string fileName){
 double VMSystem::pageFaultRate(double pageFault, double totalReferenced){
 	return pageFault/totalReferenced;
 }
-
-// replacement algorithms
-// void VMSystem::rand(){ }
-// void VMSystem::lru(){ }
-// void VMSystem::fifo(){ }
