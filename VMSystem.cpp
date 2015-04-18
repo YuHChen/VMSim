@@ -98,7 +98,7 @@ void VMSystem::fifo(){
 	//Find the page that was not referenced for a long time	
 	for(it = RAM.begin(); it != RAM.end(); it++){
 		if( (it->second).arrivalTime < min){
-			min = (it->second).lastUsedTime;
+			min = (it->second).arrivalTime;
 			victom = it;
 		}		
 	}
