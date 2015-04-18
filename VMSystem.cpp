@@ -105,23 +105,23 @@ void VMSystem::rand(void){
 }
 
 void VMSystem::lru(void){
-	std::unordered_multimap<int, info>::iterator it, victom;
+	std::unordered_multimap<int, info>::iterator it, victim;
 
 	double min = 9999999999;
 	//Find the page that was not referenced for a long time	
 	for(it = RAM.begin(); it != RAM.end(); it++){
 		if( (it->second).lastUsedTime < min){
 			min = (it->second).lastUsedTime;
-			victom = it;
+			victim = it;
 		}		
 	}
 	if(DEBUG){
-	  std::cout << "in lru: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber << std::endl;
+	  std::cout << "in lru: before erase size = " << RAM.size() << " victom is " << victim->first << "--" << victim->second.pageNumber << std::endl;
 	}
-	int pid = victom->first;
-	int page = victom->second.pageNumber;
+	int pid = victim->first;
+	int page = victim->second.pageNumber;
 	((VM.find(pid))->second)[page] = false;
-	RAM.erase(victom);
+	RAM.erase(victim);
 	if(DEBUG){
 	std::cout << "in lru: after erase size = " << RAM.size() << std::endl;
 	}
@@ -129,23 +129,23 @@ void VMSystem::lru(void){
 
 void VMSystem::fifo(void){
 
-	std::unordered_multimap<int, info>::iterator it, victom;
+	std::unordered_multimap<int, info>::iterator it, victim;
 
 	double min = 9999999999;
 	//Find the page that was not referenced for a long time	
 	for(it = RAM.begin(); it != RAM.end(); it++){
 		if( (it->second).arrivalTime < min){
 			min = (it->second).arrivalTime;
-			victom = it;
+			victim = it;
 		}		
 	}
 	if(DEBUG){
-	  std::cout << "in fifo: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber << std::endl;
+	  std::cout << "in fifo: before erase size = " << RAM.size() << " victom is " << victim->first << "--" << victim->second.pageNumber << std::endl;
 	}
-	int pid = victom->first;
-	int page = victom->second.pageNumber;
+	int pid = victim->first;
+	int page = victim->second.pageNumber;
 	((VM.find(pid))->second)[page] = false;
-	RAM.erase(victom);
+	RAM.erase(victim);
 	if(DEBUG){
 	std::cout << "in fifo: after erase size = " << RAM.size() << std::endl;
 	}
