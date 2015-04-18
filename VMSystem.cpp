@@ -1,7 +1,12 @@
 #include "VMSystem.h"
 
+static const int DEBUG = 1;
+
 VMSystem::VMSystem(int memorySize, std::string algo){
 	RAMSize = memorySize;
+	//Start counting clock time
+	startTime = std::chrono::high_resolution_clock::now();
+
 	if(algo == "RAND"){
 	  policy = RAND;
 	}
@@ -26,35 +31,81 @@ void VMSystem::terminateProcess(int processID){
 }
 
 void VMSystem::referenceProcess(int processID, int pageNumber){
+	//Record the time for a page is referenced
+	std::chrono::high_resolution_clock::time_point stopTime = std::chrono::high_resolution_clock::now();
+	//Interval from program starting to a page reference
+	double elapsed_time = std::chrono::duration<double, std::milli> (stopTime-startTime).count();
+
 	totalReferenced++;
 	//Page has not allocate in RAM previously
 	if( (VM.find(processID) -> second)[pageNumber] == false){
-		//If RAM is no full and the page is not allocated in RAM 
-	  if(RAM.size() < RAMSize){
-			RAM.insert(std::pair<int, int> (processID, pageNumber) );
-			(VM.find(processID) -> second)[pageNumber] = true;
-		}
-		//RAM is full
-		else{
-			//page swap algorithm here
+          //RAM is full --- remove one page first and then perform insertion
+	  if(RAM.size() >= (unsigned)RAMSize){
+		//page swap algorithm here
 		  switch(policy){
 		  case RAND:
 		    // rand();
 		    break;
 		  case LRU:
-		    // lru();
+		    lru();
 		    break;
 		  case FIFO:
-		    // fifo();
+		    fifo();
 		    break;
 		  default:
 		    std::cerr << "unknown policy: " << policy << std::endl;
 		  }
-		}
+	  }
+	  //If RAM is no full and the page is not allocated in RAM 
+	  struct info tmp;
+	  tmp.pageNumber = pageNumber;
+	  tmp.arrivalTime = elapsed_time;
+	  tmp.lastUsedTime = elapsed_time;	
+	  RAM.insert(std::pair<int, info> (processID, tmp) );
+	  (VM.find(processID) -> second)[pageNumber] = true;
+	
 		pageFault++;
 	}
 	//Page previously allocated
 	else{
+		(RAM.find(processID) -> second).lastUsedTime = elapsed_time;
+	}
+}
+
+void VMSystem::lru(){
+	std::unordered_multimap<int, info>::iterator it, victom;
+
+	double min = 9999999999;
+	//Find the page that was not referenced for a long time	
+	for(it = RAM.begin(); it != RAM.end(); it++){
+		if( (it->second).lastUsedTime < min){
+			min = (it->second).lastUsedTime;
+			victom = it;
+		}		
+	}
+	if(DEBUG){
+	std::cout << "in lru: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber;
+	RAM.erase(victom);
+	std::cout << " in lru: after erase size = " << RAM.size() << std::endl;
+	}
+}
+
+void VMSystem::fifo(){
+
+	std::unordered_multimap<int, info>::iterator it, victom;
+
+	double min = 9999999999;
+	//Find the page that was not referenced for a long time	
+	for(it = RAM.begin(); it != RAM.end(); it++){
+		if( (it->second).arrivalTime < min){
+			min = (it->second).lastUsedTime;
+			victom = it;
+		}		
+	}
+	if(DEBUG){
+	std::cout << "in fifo: before erase size = " << RAM.size() << " victom is " << victom->first << "--" << victom->second.pageNumber;
+	RAM.erase(victom);
+	std::cout << " in fifo: after erase size = " << RAM.size() << std::endl;
 	}
 }
 

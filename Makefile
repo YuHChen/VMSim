@@ -8,7 +8,7 @@ OBJ_FILES := $(SRC:.cpp=.o)
 
 GCC = g++
 FLAGS = -g -Wall
-COMPILER = -std=c++0x
+COMPILER = -std=c++11
 
 all:	$(EXE)
 
