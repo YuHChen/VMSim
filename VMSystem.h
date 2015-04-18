@@ -10,13 +10,13 @@
 #include<stdlib.h>
 #include<sstream>
 #include<chrono>
+#include <random>
 
 struct info{
 	double arrivalTime;
 	double lastUsedTime;
 	int pageNumber;
 };
-
 
 enum Policy { RAND, LRU, FIFO };
 
@@ -41,6 +41,8 @@ class VMSystem{
 	
 	std::chrono::high_resolution_clock::time_point startTime;
 
+	std::minstd_rand gen;
+
 	void startProcess(int processID, int memorySize);
 
 	void terminateProcess(int processID);
@@ -48,10 +50,11 @@ class VMSystem{
 	void referenceProcess(int processID, int pageNumber);
 
 	double pageFaultRate(double pageFault, double totalReference);  
+
 	// replacement algorithms
-//	void rand();
-	void lru();
-	void fifo();
+	void rand(void);
+	void lru(void);
+	void fifo(void);
 };
 
 #endif
