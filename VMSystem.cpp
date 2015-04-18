@@ -116,15 +116,16 @@ void VMSystem::lru(void){
 		}		
 	}
 	if(DEBUG){
-	  std::cout << "in lru: before erase size = " << RAM.size() << " victom is " << victim->first << "--" << victim->second.pageNumber << std::endl;
+	  std::cerr << "in lru:\nRAM: " << std::endl;
+	  for(it = RAM.begin(); it != RAM.end(); it++){
+		std::cerr << "pid:" << it->first << ", page number: " << it->second.pageNumber << ", last-used-time: " << it->second.lastUsedTime << std::endl;  
+	  }
+	  std::cerr << "Victim -- pid:" << victim->first << ", page number: " << victim->second.pageNumber << ", last-used-time: " << victim->second.lastUsedTime << std::endl;
 	}
 	int pid = victim->first;
 	int page = victim->second.pageNumber;
 	((VM.find(pid))->second)[page] = false;
 	RAM.erase(victim);
-	if(DEBUG){
-	std::cout << "in lru: after erase size = " << RAM.size() << std::endl;
-	}
 }
 
 void VMSystem::fifo(void){
@@ -139,16 +140,19 @@ void VMSystem::fifo(void){
 			victim = it;
 		}		
 	}
+	
 	if(DEBUG){
-	  std::cout << "in fifo: before erase size = " << RAM.size() << " victom is " << victim->first << "--" << victim->second.pageNumber << std::endl;
+	  std::cerr << "in lru:\nRAM: " << std::endl;
+	  for(it = RAM.begin(); it != RAM.end(); it++){
+		std::cerr << "pid:" << it->first << ", page number: " << it->second.pageNumber << ", arrival time: " << it->second.arrivalTime << std::endl;  
+	  }
+	  std::cerr << "Victim -- pid:" << victim->first << ", page number: " << victim->second.pageNumber << ", arrival time: " << victim->second.arrivalTime << std::endl;
 	}
+
 	int pid = victim->first;
 	int page = victim->second.pageNumber;
 	((VM.find(pid))->second)[page] = false;
 	RAM.erase(victim);
-	if(DEBUG){
-	std::cout << "in fifo: after erase size = " << RAM.size() << std::endl;
-	}
 }
 
 void VMSystem::simulate(std::string fileName){
