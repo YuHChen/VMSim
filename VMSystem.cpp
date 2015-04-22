@@ -1,9 +1,11 @@
 #include "VMSystem.h"
 
-static const int DEBUG = 1;
+static const int DEBUG = 0;
 
 VMSystem::VMSystem(int memorySize, std::string algo){
 	RAMSize = memorySize;
+	pageFault = 0;
+	totalReferenced = 0;
 	//Start counting clock time
 	startTime = std::chrono::high_resolution_clock::now();
 	// seed RNG
@@ -21,7 +23,7 @@ VMSystem::VMSystem(int memorySize, std::string algo){
 }
 
 void VMSystem::startProcess(int processID, int memorySize){
-	std::vector<bool> tmp (memorySize, false);
+	std::vector<bool> tmp (memorySize+1, false);
 	VM.insert(std::pair<int, std::vector<bool> >(processID, tmp));
 }
 

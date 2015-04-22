@@ -18,7 +18,7 @@ if [ "$#" -ge 2 ]; then
 	echo -n "FIFO: "
 	./VMSystem "$1" "$2" FIFO
     else
-	echo "$0: $VM does not exist"
+	echo "$0: $VM does not exist, please make first"
 	exit 1
     fi
 else
