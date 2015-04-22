@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#
+# Bash shell script to run VMSystem 3 times
+# each with time with a different replacement algorithm
+#
+
+VM="./VMSystem"
+
+if [ "$#" -ge 2 ]; then
+    if [ -e "$VM" ]; then
+	#echo "$VM exists"
+	echo "Page Fault Rates:"
+	echo -n "RANDOM: "
+	./VMSystem "$1" "$2" RAND
+	echo -n "LRU: "
+	./VMSystem "$1" "$2" LRU
+	echo -n "FIFO: "
+	./VMSystem "$1" "$2" FIFO
+    else
+	echo "$0: $VM does not exist, please make first"
+	exit 1
+    fi
+else
+    echo "usage: $0 <frames-of-memory> <input-file>"
+    exit 1
+fi
