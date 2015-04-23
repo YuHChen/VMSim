@@ -186,6 +186,7 @@ int main(int argc, char **argv){
 
   std::vector<int> pCaps(maxProcesses+1,0);
   std::vector<int> prevRef(maxProcesses+1,0);
+  std::vector<int> bursts(maxProcesses+1,0);
   std::vector<int> alive;
   std::vector<int> dead;
   int pid, cap, page;
@@ -264,37 +265,50 @@ int main(int argc, char **argv){
       // select a process to make references
       std::random_shuffle(alive.begin(), alive.end());
       pid = alive.back();
- 
-      int loop;
-      if(Pflag){
-	// phases mode: processes make references in phases, i.e. a burst of references
-	loop = 1 + (rng() % BURST_LIMIT);
-      }
-      else{
-	// not in phases mode: processes make 1 reference at a time
-	loop = 1;
-      }
       
-      for(int i = 0; i < loop; i++){
-	// determine whether to reference new page or old page (locality)
-	if((rng() % degree) == 0){
-	  // (100/degree)% chance to reference new page
+      // select a page
+      if(Pflag){
+	// phases mode (processes make references in phases, i.e. a burst of references to the same page)
+	// reference prev page
+	page = prevRef[pid];
+	if(page <= 0){
+	  // first memory reference, choose random page 
+	  page = (rng() % pCaps[pid]) + 1;
+	  bursts[pid] = 1 + (rng() % BURST_LIMIT);
+	}
+	else if(bursts[pid] <= 0){
+	  // previous phase completed, moving to next phase
+	  //!!!should phases mode exhibit spatial locality??? (limit how new page is selected)
 	  do{
 	    page = (rng() % pCaps[pid]) + 1;
-	    if(pCaps[pid] == 1) break; // if virtual memory size of process pid is 1 then there is no new page
-	  } while(page == prevRef[pid]);
+	    //if(pCaps[pid] == 1) break; // if virtual memory size of process pid is 1 then there is no new page
+	  } while( (page == prevRef[pid]) && (pCaps[pid] > 1) ); 
+	  bursts[pid] = 1 + (rng() % BURST_LIMIT);
+	}
+      }
+      else{
+	// determine whether to reference new page or old page (temporal locality)
+	if( (rng() % 10) < (unsigned)(11-degree) ){
+	  // (10*(11-degree)% chance to reference new page
+	  do{
+	    page = (rng() % pCaps[pid]) + 1;
+	    //if(pCaps[pid] == 1) break; // if virtual memory size of process pid is 1 then there is no new page
+	  } while( (page == prevRef[pid]) && (pCaps[pid] > 1) );
 	}
 	else{
 	  // reference prev page
 	  page = prevRef[pid];
-	  while(page == 0)
+	  if(page <= 0)
 	    page = (rng() % pCaps[pid]) + 1;
 	}
-	// make reference and update values
-	outfile << ref(pid, page) << std::endl;
-	threshold++;
-	prevRef[pid] = page;
+	
       }
+
+      // make reference and update values
+      outfile << ref(pid, page) << std::endl;
+      threshold++;
+      prevRef[pid] = page;
+      if(Pflag) bursts[pid] -= 1;
     }
     
   } while( (threshold < bound) && !alive.empty() );  // stop if there are no processes left or bound references has been made
