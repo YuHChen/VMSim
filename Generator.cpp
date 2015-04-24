@@ -85,6 +85,10 @@ std::string ref(int processID, int pageNumber){
 }
 
 int main(int argc, char **argv){
+  if(argc == 1){
+	usage(argv[0]);
+	return 1;
+  }
   /*** flags and values ***/
   std::string pval, mval, fval, dval, oval;
   bool Pflag = false;
