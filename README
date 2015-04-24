@@ -1,0 +1,42 @@
+In program 2, we are asked to design a program that simulates virtual memory system and evaluate the performance of different page replacement policies.
+
+**********How to run the program***********
+To run the program (virtual memory system):
+    make
+    ./program2 <frame-size> <input-file-name>
+To run the input generator:
+    make gen
+    //-h provides instruction for necessary command line arguments
+    ./gen -h
+
+**********Specification for the input file generator****************** 
+
+**********Evaluate page replacement algorithms**********
+Random page replacement:
+	-Randomly select a page in memory to replace
+	-!!NEED TO FIND A CASE WHICH RANDOM OUTPERFORMANCE THE OTHER TWO
+	Advantages:
+	 -Reduced overhead cost of tracking page references
+	 -Assume the next page to be referenced is random
+	Disadvantage:
+	 -Does not consider the fact that pages that have been heavily referenced in the past are more likely to be used again
+Least-recently-used replacement:
+	-Select a victim page such that the page has the last used time furthest in the past 
+	-From our experiment, LRU almost always outperform the other two replacement algorithm because most of the time memory reference behavior depends on previous page references
+	-!!NEED TO FIND A CASE WHICH RANDOM OUTPERFORMANCE THE OTHER TWO
+	Advantages:
+	 -In comparison with the other two replacement algorithms, LRU provided near-optimal performance
+	Disadvantage:
+	 -In practice, LRU is expensive to implement because it requires extra mechanism to keep track of all page references
+First-in-first-out replacement:
+	-Select a victim page such that the page has been in the memory the longest
+	-!!NEED TO FIND A CASE WHICH RANDOM OUTPERFORMANCE THE OTHER TWO
+	Advantage:
+	 -Could be easily implemented using a queue
+	 -Low overhead in book-keeping
+	Disadvantage:
+	 -If there exist a page that resides in memory for a long time and it has been referenced frequently, the FIFO algorithm might still pick it as a victim page
+	 -Might experience the Belady's anomaly with certain page reference pattern
+	 -In practice, performance is quite low compare with LRU
+
+  
