@@ -1,0 +1,150 @@
+========== 1 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 98.9637%
+LRU: Page fault rate: 98.9637%
+FIFO: Page fault rate: 98.9637%
+========== 2 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 98.0193%
+LRU: Page fault rate: 97.9865%
+FIFO: Page fault rate: 97.9865%
+========== 3 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 96.9174%
+LRU: Page fault rate: 97.0355%
+FIFO: Page fault rate: 97.0289%
+========== 4 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 95.8484%
+LRU: Page fault rate: 95.9992%
+FIFO: Page fault rate: 96.0386%
+========== 5 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 95.1925%
+LRU: Page fault rate: 94.9433%
+FIFO: Page fault rate: 95.0416%
+========== 6 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 94.0513%
+LRU: Page fault rate: 94.0054%
+FIFO: Page fault rate: 93.9923%
+========== 7 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 92.9035%
+LRU: Page fault rate: 93.0937%
+FIFO: Page fault rate: 93.1855%
+========== 8 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 92.0247%
+LRU: Page fault rate: 92.1624%
+FIFO: Page fault rate: 92.1952%
+========== 9 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 91.336%
+LRU: Page fault rate: 91.1589%
+FIFO: Page fault rate: 91.1852%
+========== 10 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 90.2538%
+LRU: Page fault rate: 90.0833%
+FIFO: Page fault rate: 90.1292%
+========== 100 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 25.6575%
+LRU: Page fault rate: 16.1409%
+FIFO: Page fault rate: 25.1394%
+========== 200 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 10.3365%
+LRU: Page fault rate: 5.96183%
+FIFO: Page fault rate: 10.1594%
+========== 300 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 7.63429%
+LRU: Page fault rate: 5.64701%
+FIFO: Page fault rate: 7.76546%
+========== 400 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 6.57178%
+LRU: Page fault rate: 5.47649%
+FIFO: Page fault rate: 6.89316%
+========== 500 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.92904%
+LRU: Page fault rate: 5.38467%
+FIFO: Page fault rate: 6.13891%
+========== 600 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.68636%
+LRU: Page fault rate: 5.30596%
+FIFO: Page fault rate: 6.06677%
+========== 700 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.33876%
+LRU: Page fault rate: 5.27973%
+FIFO: Page fault rate: 5.90936%
+========== 800 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 900 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1000 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1100 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1200 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1300 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1400 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1500 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1600 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1700 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1800 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 1900 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
+========== 2000 frames ==========
+Page Fault Rates:
+RANDOM: Page fault rate: 5.26661%
+LRU: Page fault rate: 5.26661%
+FIFO: Page fault rate: 5.26661%
