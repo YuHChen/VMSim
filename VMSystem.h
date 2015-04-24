@@ -50,7 +50,8 @@ class VMSystem{
 	void referenceProcess(int processID, int pageNumber);
 
 	double pageFaultRate(double pageFault, double totalReference);  
-
+	
+	void updateTime(int processID, int pageNumber, double time);
 	// replacement algorithms
 	void rand(void);
 	void lru(void);

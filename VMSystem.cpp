@@ -35,7 +35,12 @@ void VMSystem::terminateProcess(int processID){
 }
 
 void VMSystem::referenceProcess(int processID, int pageNumber){
-  if(DEBUG) std::cerr << "reference: pid " << processID << " page " << pageNumber << std::endl; 
+  if(DEBUG){
+  for(std::unordered_multimap<int, info>::iterator it = RAM.begin(); it != RAM.end(); it++){
+	std::cerr << "pid: " << it->first << "---page: " << it->second.pageNumber << "---arrival time: " << it->second.arrivalTime << "---last used time: " << it->second.lastUsedTime << std::endl;
+  }
+  }
+  if(DEBUG) std::cerr << "reference: pid " << processID << " page " << pageNumber << std::endl;   
 	//Record the time for a page is referenced
 	std::chrono::high_resolution_clock::time_point stopTime = std::chrono::high_resolution_clock::now();
 	//Interval from program starting to a page reference
@@ -73,7 +78,7 @@ void VMSystem::referenceProcess(int processID, int pageNumber){
 	}
 	//Page previously allocated
 	else{
-		(RAM.find(processID) -> second).lastUsedTime = elapsed_time;
+		updateTime(processID, pageNumber, elapsed_time);
 	}
 }
 
@@ -184,4 +189,16 @@ void VMSystem::simulate(std::string fileName){
 
 double VMSystem::pageFaultRate(double pageFault, double totalReferenced){
 	return pageFault/totalReferenced;
+}
+
+void VMSystem::updateTime(int processID, int pageNumber, double elapsedTime){
+	std::unordered_multimap<int, info>::iterator it;
+	for(it = RAM.begin(); it != RAM.end(); it++){
+		if(it->first == processID){
+			if(it->second.pageNumber == pageNumber){
+				it->second.lastUsedTime = elapsedTime;
+				break;
+			}
+		}
+	}
 }
