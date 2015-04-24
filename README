@@ -1,4 +1,4 @@
-In program 2, we are asked to design a program that simulates virtual memory system and evaluate the performance of different page replacement policies.
+In program 2, we are asked to design a program that simulates virtual memory system, and evaluate the performance of different page replacement policies.
 
 **********How to run the program***********
 To run the program (virtual memory system):
@@ -10,6 +10,7 @@ To run the input generator:
     ./gen -h
 
 **********Specification for the input file generator****************** 
+A generic generator that creates files to test any page replacement algorithm. The generator closely simulate the memory references made by real systems.
 
 **********Evaluate page replacement algorithms**********
 Random page replacement:
@@ -37,6 +38,10 @@ First-in-first-out replacement:
 	Disadvantage:
 	 -If there exist a page that resides in memory for a long time and it has been referenced frequently, the FIFO algorithm might still pick it as a victim page
 	 -Might experience the Belady's anomaly with certain page reference pattern
-	 -In practice, performance is quite low compare with LRU
+	 -In practice, performance is quite low compare to LRU
 
+**********Result***********
+Using the files created by the generator, we observed that LRU almost always outperform the other two page replacement algorith in terms of page fault rate. This is because the input file generator mimics the memory references made by real systems, and in practice, LRU has better performance than random and FIFO page replacement algorithms
+
+To show that FIFO has lower page fault rate in some cases, we hard-coded a input file call 'fifo.txt'. Run the program with this input file will demonstrate the fact that it's possible for FIFO to outperform the others. However, in practice, LRU is the most efficient out of the three page replacement methods implemented for this program
   
