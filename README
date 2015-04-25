@@ -66,5 +66,5 @@ First-in-first-out replacement:
 **********Result***********
 Using the files created by the generator, we observed that LRU almost always outperform the other two page replacement algorithms in terms of page fault rate. This is because the input file generator mimics the memory references made by real systems, and in practice, LRU has better performance than random and FIFO page replacement algorithms
 
-To show that FIFO has lower page fault rate in some cases, we hard-coded a input file called 'fifo.txt'. Run program2 with this input file will demonstrate the fact that it's possible for FIFO to outperform the others. However, in practice, LRU is the most efficient out of the three page replacement methods implemented for this program
+To show that FIFO has lower page fault rate in some cases, we hard-coded a input file called 'fifo.txt'. Run program2 with command './program2 4 fifo.txt', this will demonstrate the fact that it's possible for FIFO to outperform the others. However, in practice, LRU is the most efficient out of the three page replacement methods implemented for this program
   
