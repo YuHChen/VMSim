@@ -25,7 +25,7 @@ if [ "$#" -eq 5 ]; then
     done
 
     # run with frames in [<frames-start>,FRAME_LIMIT]
-    for (( nFrames="$3"; nFrames<="$FRAME_LIMIT"; nFrames+="$5" ))
+    for (( nFrames="$3"; nFrames<"$FRAME_LIMIT"; nFrames+="$5" ))
     do
 	if [ $DEBUG -eq 1 ]; then
 	    echo "run ./program2 with $nFrames frames"
