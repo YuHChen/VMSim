@@ -14,14 +14,14 @@
 #define DEF_P 5
 #define LO_P 1
 #define HI_P 100
-#define DEF_F 5
-#define LO_F 1
-#define HI_F 100
+//#define DEF_F 5
+//#define LO_F 1
+//#define HI_F 100
 #define LO_M 1
 #define HI_M 20000
 #define DEF_D 5
-#define LO_D 1
-#define HI_D 10
+#define LO_D 0
+#define HI_D 9
 #define DEF_OUT "in.txt"
 
 // limits
@@ -30,17 +30,18 @@
 #define DEBUG 0 // 1 to turn debug on
 
 void usage(char *progName){
-  std::cerr << "Usage: " << progName << " [-u usage] [-p <num-processes>] [-m <memory-needed>] [-f <num-frames>] [-d <deg-of-locality>] [-o <output-file>] [-P phases-mode] [-H high-mem-pressure] [-h help]" << std::endl;
+  std::cerr << "Usage: " << progName << " [-u usage] [-p <num-processes>] [-m <memory-needed>] [-d <deg-of-locality>] [-o <output-file>] [-P phases-mode] [-H high-mem-pressure] [-h help]" << std::endl;
+  //std::cerr << "Usage: " << progName << " [-u usage] [-p <num-processes>] [-m <memory-needed>] [-f <num-frames>] [-d <deg-of-locality>] [-o <output-file>] [-P phases-mode] [-H high-mem-pressure] [-h help]" << std::endl;
   std::cerr << "Try '" << progName << " -h' for more information." << std::endl;
 }
 
 void help(char *progName){
   std::cerr << "Usage: " << progName << " [-u usage] [-p <num-processes>] [-m <memory-needed>] [-f <num-frames>] [-d <deg-of-locality>] [-P phases-mode] [-H high-mem-pressure] [-h help]" << std::endl;
   std::cerr << "  -p: number of processes to simulate, range: ["<<LO_P<<","<<HI_P<<"], default: " << DEF_P << std::endl;
-  std::cerr << "  -f: number of frames in RAM, range: ["<<LO_F<<","<<HI_F<<"], default: " << DEF_F << std::endl;
+  //std::cerr << "  -f: number of frames in RAM, range: ["<<LO_F<<","<<HI_F<<"], default: " << DEF_F << std::endl;
   std::cerr << "  -m: total amount of memory required by all processes, range: ["<<LO_M<<","<<HI_M<<"], default: <num-processes>" << std::endl;
   std::cerr << "  -d: degree of locality of reference processes exhibit, range: ["<<LO_D<<","<<HI_D<<"], default: " << DEF_D << std::endl;
-  std::cerr << "  -o: name of output file" << std::endl;
+  std::cerr << "  -o: name of output file, default: in.txt" << std::endl;
   std::cerr << "  -P: toggle phases mode, in which references are generated in phases" << std::endl;
   std::cerr << "  -H: toggle high memory pressure mode, in which <memory-needed> upper limit is removed" << std::endl;
 }
@@ -90,7 +91,8 @@ int main(int argc, char **argv){
 	return 1;
   }
   /*** flags and values ***/
-  std::string pval, mval, fval, dval, oval;
+  std::string pval, mval, dval, oval;
+  //std::string pval, mval, fval, dval, oval;
   bool Pflag = false;
   bool Hflag = false;
   int c;
@@ -112,9 +114,9 @@ int main(int argc, char **argv){
     case 'm':
       mval = optarg;
       break;
-    case 'f':
-      fval = optarg;
-      break;
+      //case 'f':
+      //fval = optarg;
+      //break;
     case 'd':
       dval = optarg;
       break;
@@ -131,7 +133,7 @@ int main(int argc, char **argv){
       help(argv[0]);
       return 1;
     case '?':
-      if( (optopt == 'p') || (optopt == 'm') || (optopt == 'f') ||
+      if( (optopt == 'p') || (optopt == 'm') || //(optopt == 'f') ||
 	  (optopt == 'd') || (optopt == 'o') ){
 	// user did not provide required argument
 	std::cerr << argv[0] << ": option -" << (char)optopt << " requires an argument" << std::endl;
@@ -156,12 +158,13 @@ int main(int argc, char **argv){
  
   if(DEBUG){
     std::cerr << "completed parsing command line" << std::endl;
-    std::cerr << "pval="<<pval<<", mval="<<mval<<", fval="<<fval<<", dval="<<dval<<", oval="<<oval<<", Pflag="<<Pflag<<", Hflag="<<Hflag << std::endl;
+    std::cerr << "pval="<<pval<<", mval="<<mval<<", dval="<<dval<<", oval="<<oval<<", Pflag="<<Pflag<<", Hflag="<<Hflag << std::endl;
+    //std::cerr << "pval="<<pval<<", mval="<<mval<<", fval="<<fval<<", dval="<<dval<<", oval="<<oval<<", Pflag="<<Pflag<<", Hflag="<<Hflag << std::endl;
   }
 
   /*** extract and set parameters ***/
   int maxProcesses = extractR(argv[0], "num-processes", pval, LO_P, HI_P, DEF_P); 
-  int maxFrames = extractR(argv[0], "num-frames", fval, LO_F, HI_F, DEF_F); 
+  //int maxFrames = extractR(argv[0], "num-frames", fval, LO_F, HI_F, DEF_F); 
   int degree = extractR(argv[0], "deg-of-locality", dval, LO_D, HI_D, DEF_D); 
   int maxVMemory;
   if(Hflag){
@@ -182,7 +185,8 @@ int main(int argc, char **argv){
 
   if(DEBUG){
     std::cerr << "completed extracting and setting parameters" << std::endl;
-    std::cerr << "maxProcesses="<<maxProcesses<<", maxVMemory="<<maxVMemory<<", maxFrames="<<maxFrames<<", degree="<<degree<<", oval="<<oval<<", Pflag="<<Pflag<<", Hflag="<<Hflag << std::endl;
+    std::cerr << "maxProcesses="<<maxProcesses<<", maxVMemory="<<maxVMemory<<", degree="<<degree<<", oval="<<oval<<", Pflag="<<Pflag<<", Hflag="<<Hflag << std::endl;
+    //std::cerr << "maxProcesses="<<maxProcesses<<", maxVMemory="<<maxVMemory<<", maxFrames="<<maxFrames<<", degree="<<degree<<", oval="<<oval<<", Pflag="<<Pflag<<", Hflag="<<Hflag << std::endl;
   }
 
   /*** generate instructions ***/
@@ -292,8 +296,8 @@ int main(int argc, char **argv){
       }
       else{
 	// determine whether to reference new page or old page (temporal locality)
-	if( (rng() % 10) < (unsigned)(11-degree) ){
-	  // (10*(11-degree)% chance to reference new page
+	if( (rng() % 10) < (unsigned)(10-degree) ){
+	  // (10*(10-degree)% chance to reference new page
 	  do{
 	    page = (rng() % pCaps[pid]) + 1;
 	    //if(pCaps[pid] == 1) break; // if virtual memory size of process pid is 1 then there is no new page

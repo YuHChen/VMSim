@@ -4,12 +4,37 @@ In program 2, we are asked to design a program that simulates virtual memory sys
 To run the program (virtual memory system):
     make
     ./program2 <frame-size> <input-file-name>
+
 To run the input generator:
     make gen
-    //-h provides instruction for necessary command line arguments
+    //-u shows the usage string
+    ./gen -u 
+    //-h provides verbose instructions for necessary command line arguments
     ./gen -h
 
-**********Specification for the input file generator****************** 
+**********Notes on the input file generator******************
+-m: total amount of memory required by all processes
+    * The specified value will be an upper bound on the total size of the virtual address spaces.
+     
+-d: degree of locality of reference processes exhibit
+    * The higher the value specified, the more likely processes will exhibit temporal locality. 
+    * The value is on the scale of 0-9, with 0 being equivalent to 0% and 9 being equivalent to 90%. 
+    * Temporal locality is simulated by referencing the page that was previously referenced by that process. 
+    * Thus, 0 means there is a 0% chance that the process will reference the page it referenced previously (no temporal locality), while 9 means there is 90% chance that the process will reference the page it referenced previously (high rate of temporal locality).
+    * We expect that higher values for this option will translate to better performance from LRU and other algorithms that depend on locality.
+
+-P: toggle phases mode
+    * Using this option will toggle phases mode on.
+    * In phases mode, processes will reference one of their pages a small random number of times in a row (simulating one phase), and then do the same for another page (simulating another phase).
+    * Phases mode exhibits high temporal locality, so we expect LRU and other algorithms that depend on locality to have better performance.
+
+-H: toggle high memory pressure mode
+    * Using this option will toggle high memory pressure mode on.
+    * In high memory pressure mode, the upper restriction on the range of -m is removed, allowing the user to specify large values for -m (larger virtual address spaces).
+    * Allocating more virtual memory than physical memory can support results in pressure on the virtual memory system.
+    * We expect that this mode can test which algorithms perform well with high memory pressure.
+
+* Because of the generator's implementation, higher values for -m will also lead to more memory references. The generator tries to make at least (value of -m) number of references in attempt to get as many processes to make references as possible. In high memory pressure mode, it will try to make even more. 
 
 **********Evaluate page replacement algorithms**********
 Random page replacement:
@@ -19,6 +44,7 @@ Random page replacement:
 	 -Assume the next page to be referenced is random
 	Disadvantage:
 	 -Does not consider the fact that pages that have been heavily referenced in the past are more likely to be used again
+
 Least-recently-used replacement:
 	-Select a victim page such that the page has the last used time furthest in the past 
 	-From our experiment, LRU almost always outperform the other two replacement algorithm because most of the time memory reference behavior depends on previous page references
@@ -26,6 +52,7 @@ Least-recently-used replacement:
 	 -In comparison with the other two replacement algorithms, LRU provided near-optimal performance
 	Disadvantage:
 	 -In practice, LRU is expensive to implement because it requires extra mechanism to keep track of all page references
+
 First-in-first-out replacement:
 	-Select a victim page such that the page has been in the memory the longest
 	Advantage:
